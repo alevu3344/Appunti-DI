@@ -1,0 +1,222 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{notes}[2025/05/29 Modern Lecture Notes Style for AI & DS]
+
+% ----------------------------------------------------------------------
+% Required Packages
+% ----------------------------------------------------------------------
+\RequirePackage[italian]{babel}
+\RequirePackage[utf8]{inputenc} % Input encoding
+\RequirePackage[T1]{fontenc}    % Font encoding
+\RequirePackage{lmodern}        % Modern font
+\RequirePackage{subcaption}     % Subcaption support
+\RequirePackage{amsmath}        % AMS math enhancements
+\RequirePackage{float}          % Theorem environments
+\RequirePackage{amsfonts}       % AMS fonts
+\RequirePackage{amssymb}        % AMS symbols
+\RequirePackage{graphicx}       % For including images
+\RequirePackage{xcolor}         % For defining colors
+\RequirePackage[a4paper, margin=1in]{geometry} % Page geometry
+\RequirePackage{hyperref}       % For hyperlinks
+\RequirePackage{enumitem}       % For customizing lists
+\RequirePackage{titling}        % For customizing title
+\RequirePackage{tocloft}        % For customizing table of contents
+\RequirePackage[framemethod=TikZ]{mdframed} % For framed boxes (alternative to tcolorbox if preferred)
+\RequirePackage{tcolorbox}      % For colored and framed boxes (theorems, definitions, etc.)
+\RequirePackage{listings}       % For code listings
+\RequirePackage[linesnumbered,ruled,vlined]{algorithm2e}
+\RequirePackage{caption}        % For \captionof
+
+% ----------------------------------------------------------------------
+% Color Definitions
+% ----------------------------------------------------------------------
+
+\definecolor{primaryColor}{HTML}{2E86C1}  % A nice blue
+\definecolor{secondaryColor}{HTML}{1ABC9C} % A teal/green
+\definecolor{accentColor}{HTML}{F39C12}   % An orange
+\definecolor{lightgray}{HTML}{F5F5F5}     % Light gray for code background
+\definecolor{darkgray}{HTML}{555555}      % Dark gray for text
+\definecolor{codegreen}{HTML}{008000}
+\definecolor{codegray}{HTML}{808080}
+\definecolor{codepurple}{HTML}{800080}
+\definecolor{codeblue}{HTML}{0000FF}
+
+% ----------------------------------------------------------------------
+% Hyperref Setup
+% ----------------------------------------------------------------------
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primaryColor,
+    citecolor=secondaryColor,
+    urlcolor=accentColor,
+    pdftitle={\@title},
+    pdfauthor={\@author},
+    pdfsubject={Lecture Notes},
+    pdfkeywords={AI, Data Science, Lecture Notes},
+    bookmarksnumbered=true,
+    bookmarksopen=true,
+    bookmarksopenlevel=1
+}
+
+% ----------------------------------------------------------------------
+% Title and Author Formatting
+% ----------------------------------------------------------------------
+
+\pretitle{\begin{flushleft}\LARGE\bfseries\color{primaryColor}}
+\posttitle{\par\end{flushleft}\vskip 0.5em}
+\preauthor{\begin{flushleft}\large\color{darkgray}}
+\postauthor{\par\end{flushleft}\vskip 1em}
+\predate{\begin{flushleft}\normalsize\color{darkgray}}
+\postdate{\par\end{flushleft}\vskip 2em}
+
+% ----------------------------------------------------------------------
+% Section and Subsection Formatting
+% ----------------------------------------------------------------------
+
+\RequirePackage{titlesec}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{primaryColor}}
+  {\thesection}
+  {1em}
+  {}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{primaryColor!80!black}}
+  {\thesubsection}
+  {1em}
+  {}
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\color{primaryColor!60!black}}
+  {\thesubsubsection}
+  {1em}
+  {}
+
+\titlespacing*{\section}{0pt}{1.5\baselineskip}{0.5\baselineskip}
+\titlespacing*{\subsection}{0pt}{1.2\baselineskip}{0.4\baselineskip}
+\titlespacing*{\subsubsection}{0pt}{1\baselineskip}{0.3\baselineskip}
+
+% ----------------------------------------------------------------------
+% Table of Contents Formatting
+% ----------------------------------------------------------------------
+
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % Dotted leaders for sections
+\renewcommand{\cftsecfont}{\color{primaryColor}\bfseries}
+\renewcommand{\cftsubsecfont}{\color{primaryColor!80!black}}
+\renewcommand{\cftsubsubsecfont}{\color{primaryColor!60!black}}
+\renewcommand{\cftsecpagefont}{\color{darkgray}}
+\renewcommand{\cftsubsecpagefont}{\color{darkgray}}
+\renewcommand{\cftsubsubsecpagefont}{\color{darkgray}}
+
+% ----------------------------------------------------------------------
+% Custom Boxes for Theorems, Definitions, Examples, etc. - MODERN
+% ----------------------------------------------------------------------
+
+% Common settings for these modern tcolorboxes
+% This \tcbset applies to all \newtcolorbox definitions that follow in this file.
+\tcbset{
+  fonttitle=\bfseries, % Keep title font bold
+  arc=2mm, % Rounded corners for the main box
+  boxsep=2.5mm, % Overall padding around the content of the box
+}
+
+% Theorem Box - Modern
+\newtcolorbox{theorembox}[2][]{
+  colback=primaryColor!5!white,       % Background of the content area (very light)
+  colframe=primaryColor!65!black,     % Color of the frame around the content
+  colbacktitle=primaryColor!65!black, % Background color of the title bar (solid color)
+  coltitle=white,                     % Text color of the title (white for good contrast)
+  title={Teorema #2}, % Assuming Italian from previous request
+  % Specific options for this box, if any, passed via #1
+  #1
+}
+
+% Definition Box - Modern
+\newtcolorbox{definitionbox}[2][]{
+  colback=secondaryColor!5!white,
+  colframe=secondaryColor!65!black,
+  colbacktitle=secondaryColor!65!black,
+  coltitle=white, % Assuming secondaryColor is dark enough for white text
+  title={Definizione: #2}, % Assuming Italian
+  #1
+}
+
+% Example Box - Modern
+\newtcolorbox{examplebox}[2][]{
+  colback=accentColor!8!white, % Slightly more tint for potentially lighter accent colors
+  colframe=accentColor!70!black,
+  colbacktitle=accentColor!70!black,
+  % For orange, black text might be more readable than white, depending on the exact shade
+  % If accentColor!70!black is a dark/burnt orange, white is fine.
+  % If it's a brighter/mid orange, black text is better.
+  coltitle=white, % Or consider black if accentColor!70!black is not dark enough
+  title={Esempio: #2}, % Assuming Italian
+  #1
+}
+
+% Note Box - Modern (Corrected to allow custom title part)
+\newtcolorbox{notebox}[2][]{  % MODIFIED: Changed [1][] to [2][]
+  colback=darkgray!10!white, % Very light gray for content background
+  colframe=darkgray!75!black,
+  colbacktitle=darkgray!75!black,
+  coltitle=white,
+  title={Nota: #2},           % MODIFIED: Added #2 to use the second argument
+  % #1 is for optional tcolorbox settings passed in square brackets
+  #1 
+}
+% ----------------------------------------------------------------------
+% Listings (Code Blocks) Setup
+% ----------------------------------------------------------------------
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{lightgray},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codeblue}\bfseries,
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2,
+    emph={fit,predict,transform,forward,backward,loss,optimizer,DataLoader,Dataset,Module,Sequential,Linear,ReLU,Sigmoid,CrossEntropyLoss,Adam,SGD,train_test_split,StandardScaler,PCA,KMeans,LogisticRegression,RandomForestClassifier,GradientBoostingRegressor,torch,sklearn,numpy,pandas,matplotlib,seaborn,tensorflow,keras}, % AI/DS common keywords
+    emphstyle=\color{secondaryColor}\bfseries
+}
+\lstset{style=mystyle}
+
+% Python specific environment (optional)
+\lstnewenvironment{pythoncode}[1][]
+  {\lstset{language=Python,style=mystyle,#1}}
+  {}
+
+% ----------------------------------------------------------------------
+% Algorithm2e Setup
+% ----------------------------------------------------------------------
+\SetKwInput{KwInput}{Input}                % Set the Input
+\SetKwInput{KwOutput}{Output}              % set the Output
+\SetKwComment{Comment}{$\triangleright$\ }{} % Custom comment style for algorithm2e
+
+% ----------------------------------------------------------------------
+% Miscellaneous Settings
+% ----------------------------------------------------------------------
+
+\setlength{\parindent}{0pt} % No indentation for paragraphs
+\setlength{\parskip}{0.5em}   % Space between paragraphs
+
+\renewcommand{\labelitemi}{\textcolor{primaryColor}{$\bullet$}} % Customize itemize bullets
+\renewcommand{\labelitemii}{\textcolor{secondaryColor}{$\circ$}}
+\renewcommand{\labelitemiii}{\textcolor{accentColor}{$\cdot$}}
+
+% Command for a horizontal rule with custom color and thickness
+\newcommand{\customhr}{\textcolor{primaryColor!50!black}{\hrule height 1pt}\medskip}
+
+% Command for placeholder text
+\newcommand{\lipsum}[1][1-2]{\bgroup\color{darkgray!70}\textit{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.}\egroup} % Simplified lipsum
+
+\endinput
+% --- End of notes.sty ---
